@@ -260,30 +260,24 @@ public class MerchantStockService {
 
 
     // extra endPoint #4 to view products that are out of stock
-    public ArrayList<Product> getOutOfStockProducts() {
+    public ArrayList<Product> getOutOfStockProducts(String merchantId) {
 
         ArrayList<Product> result = new ArrayList<>();
-//loop through all products
+
         for (Product product : productService.getProduct()) {
 
-            boolean foundMerchant = false;
-            boolean outOfStock = true;
-//loop through merchant stock, if the product is found there, then set foundMerchant to true
- //if the product in merchant its stock is more than 0; its not out of stock, then set outOfStock to false and stop the loop
             for (MerchantStock stock : merchantStocks) {
-                if (stock.getProductid().equals(product.getId())) {
-                    foundMerchant = true;
-                    if (stock.getStock() > 0) {
-                        outOfStock = false;
-                        break;
-                    }
+
+                if (stock.getMerchantid().equals(merchantId)
+                        && stock.getProductid().equals(product.getId())
+                        && stock.getStock() == 0) {
+
+                    result.add(product);
+                    break;
                 }
             }
-//if the product is found and is out of stock add it to result list
-            if (foundMerchant && outOfStock) {
-                result.add(product);
-            }
         }
+
         return result;
     }
 

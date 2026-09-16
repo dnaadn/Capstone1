@@ -124,15 +124,13 @@ public class MerchantStockController {
 
 
 //extra endPoint
-    @GetMapping("/out-of-stock")
-    public ResponseEntity<?> getOutOfStockProducts() {
+@GetMapping("/out-of-stock/{merchantId}")
+public ResponseEntity<?> getOutOfStockProducts(@PathVariable String merchantId) {
 
-        ArrayList<Product> result = merchantStockService.getOutOfStockProducts();
-        if (result.isEmpty()) {
-            return ResponseEntity.status(404).body(new ApiResponse("No out of stock products found"));
-        }
-        return ResponseEntity.status(200).body(result);
-    }
+    return ResponseEntity.ok(
+            merchantStockService.getOutOfStockProducts(merchantId)
+    );
+}
 
 
 
